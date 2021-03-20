@@ -2,9 +2,9 @@ package com.example.mymetals
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
-import android.widget.Toast.LENGTH_LONG
 import androidx.appcompat.app.AppCompatActivity
+import com.example.mymetals.model.USDXPD
+import com.example.mymetals.model.USDXPT
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -31,23 +31,36 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
     fun basicCoroutineFetch() {
 
         if (debounced) {
             GlobalScope.launch(Dispatchers.IO) {
-                val buffer = StringBuffer()
-                val doc: Document =
+
+                var buffer = StringBuffer()
+                var doc: Document =
                     Jsoup.connect("https://www.investing.com/currencies/xpt-usd").get()
-                val span: Elements = doc.select("span")
-                val method: String = span.select("span").text()
+                var span: Elements = doc.select("span")
+                var method: String = span.select("span").text()
                 buffer.append(method)
-                val prices = calculateBIDASK()
+                var prices = calculateBIDASK()
+                var platinumRate = USDXPT(prices.getBid(buffer.toString()), 0)
+                buffer.delete(0, buffer.length)
+
+                doc =
+                    Jsoup.connect("https://www.investing.com/currencies/xpd-usd").get()
+                 span = doc.select("span")
+                 method= span.select("span").text()
+                buffer.append(method)
+                prices = calculateBIDASK()
+                var palladiumRate = USDXPD(prices.getBid(buffer.toString()), 0)
+                buffer.delete(0, buffer.length)
+
 
                 Log.d(
-                    "GOLD",
-                    "onCreate: ${prices.getBid(buffer.toString())}"
+                    TAG,
+                    "basicCoroutineFetch: ${platinumRate.rate} ${palladiumRate.rate}"
                 )
-
 
 
                 debounced = false
