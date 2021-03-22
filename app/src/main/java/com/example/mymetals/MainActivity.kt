@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
     private var debounced = false
 
-    // test
+    // test2
 
     private lateinit var navigation: Navigation
     private lateinit var binding: ActivityMainBinding
