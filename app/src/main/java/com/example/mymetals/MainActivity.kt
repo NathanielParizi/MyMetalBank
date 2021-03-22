@@ -1,17 +1,18 @@
 package com.example.mymetals
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.example.mymetals.model.USDXPD
-import com.example.mymetals.model.USDXPT
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
+import com.example.mymetals.databinding.ActivityMainBinding
+import com.example.mymetals.di.appModule
+import com.example.mymetals.network.MetalViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
-import org.jsoup.select.Elements
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.context.startKoin
 
 
 private const val TAG = "MainActivity"
@@ -21,51 +22,29 @@ class MainActivity : AppCompatActivity() {
 
     private var debounced = false
 
+    private lateinit var navigation: Navigation
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
+        initializeApplication()
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "Android App"
+
+        binding.navigationBottomBar.setupWithNavController(findNavController(R.id.nav_host_fragment_container))
         debounced = true
-        basicCoroutineFetch()
 
     }
 
-
-    fun basicCoroutineFetch() {
-
-        if (debounced) {
-            GlobalScope.launch(Dispatchers.IO) {
-
-                var buffer = StringBuffer()
-                var doc: Document =
-                    Jsoup.connect("https://www.investing.com/currencies/xpt-usd").get()
-                var span: Elements = doc.select("span")
-                var method: String = span.select("span").text()
-                buffer.append(method)
-                var prices = calculateBIDASK()
-                var platinumRate = USDXPT(prices.getBid(buffer.toString()), 0)
-                buffer.delete(0, buffer.length)
-
-                doc =
-                    Jsoup.connect("https://www.investing.com/currencies/xpd-usd").get()
-                 span = doc.select("span")
-                 method= span.select("span").text()
-                buffer.append(method)
-                prices = calculateBIDASK()
-                var palladiumRate = USDXPD(prices.getBid(buffer.toString()), 0)
-                buffer.delete(0, buffer.length)
-
-
-                Log.d(
-                    TAG,
-                    "basicCoroutineFetch: ${platinumRate.rate} ${palladiumRate.rate}"
-                )
-
-
-                debounced = false
-                debounce()
-            }
+    private fun initializeApplication() {
+        startKoin {
+            androidLogger()
+            androidContext(this@MainActivity)
+            modules(appModule)
         }
     }
 

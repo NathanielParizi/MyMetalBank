@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/actionHoldings">
+
+    <fragment
+        android:id="@+id/actionHoldings"
+        android:name="com.example.mymetals.HoldingsFragment"
+        android:label="fragment_holdings"
+        tools:layout="@layout/fragment_holdings" />
+    <fragment
+        android:id="@+id/actionPortfolio"
+        android:name="com.example.mymetals.PortfolioFragment"
+        android:label="fragment_portfolio"
+        tools:layout="@layout/fragment_portfolio" />
+    <fragment
+        android:id="@+id/actionMarket"
+        android:name="com.example.mymetals.MarketFragment"
+        android:label="fragment_market"
+        tools:layout="@layout/fragment_market" />
+</navigation>

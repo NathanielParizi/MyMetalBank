@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <item
+            android:id="@+id/actionHoldings"
+            android:enabled="true"
+            android:icon="@drawable/ic_launcher_background"
+            android:menuCategory="secondary"
+            android:title="Holdings"
+            app:showAsAction="ifRoom" />
+
+        <item
+            android:id="@+id/actionPortfolio"
+            android:enabled="true"
+            android:icon="@drawable/ic_launcher_foreground"
+            android:menuCategory="secondary"
+            android:title="Portfolio"
+            app:showAsAction="ifRoom" />
+
+        <item
+            android:id="@+id/actionMarket"
+            android:enabled="true"
+            android:icon="@drawable/ic_launcher_foreground"
+            android:menuCategory="secondary"
+            android:iconTint="@color/black"
+            android:title="Market"
+            app:showAsAction="ifRoom" />
+
+</menu>

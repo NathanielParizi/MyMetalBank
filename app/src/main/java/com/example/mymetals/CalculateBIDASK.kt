@@ -1,5 +1,7 @@
 package com.example.mymetals
 
+import java.math.BigDecimal
+
 class calculateBIDASK {
     private var bid: String? = null
     private var ask: String? = null
@@ -7,7 +9,8 @@ class calculateBIDASK {
     private var startA = 0
     private val bidBuffer = StringBuffer()
     private val askBuffer = StringBuffer()
-    fun getBid(haystack: String): Double {
+
+    fun getBid(haystack: String): BigDecimal {
         var bid1 = 0.0
         val start = haystack.indexOf("Bid/Ask") + 9
 
@@ -28,10 +31,10 @@ class calculateBIDASK {
             i++
         }
         commaAdjust = 0
-        return bid1
+        return BigDecimal(bid1)
     }
 
-    fun getAsk(haystack: String): Double {
+    fun getAsk(haystack: String): BigDecimal {
 
         // Get ask price
         var ask1 = 0.0
@@ -50,6 +53,6 @@ class calculateBIDASK {
             i++
         }
         commaAdjust = 0
-        return ask1
+        return BigDecimal(ask1)
     }
 }
